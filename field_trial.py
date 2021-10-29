@@ -1,4 +1,4 @@
-# Field trial simulation - V2
+# Field trial simulation
 # guilherme borchardt - Oct., 2021
 # simulation of inference about differences between averages.
 # assumption: two independent variables that with similar variances and \
@@ -6,7 +6,7 @@
 # inference statistics: T-Test for equal variance - two tails.
 
 
-app_version = 'v. 0.8' # code version
+app_version = 'v. 0.9' # code version
 
 print(chr(27) + "[2J")
 print('loading....')
@@ -20,6 +20,13 @@ from datetime import date
 import os
 from statsmodels.stats import power as pwr
 from art import *
+
+#
+# from FTA_data import product_segment_dict, product_list, specie_list, take_product
+#
+#
+# print(product_segment_dict['Gallipro'])
+# print(product_list)
 
 
 def value_p(p_input):
@@ -47,7 +54,7 @@ def error():
 
 
 
-    # build title
+    # build title - ASC II title
 art = text2art(f"Field trial analyser", font='smslant')
 print(art) # print title
 
@@ -57,7 +64,19 @@ print('***** This APP is only suitable for continuous parameters that follow nor
 # define the input parameters
 print('Please input the data below:\n\n')
 
+# # input variables
+#
+# specie_option = int(input(f'Animal Segment:\n   [1] - {specie_list[0]}\n   [2] - {specie_list[1]}\n   [3] - {specie_list[2]}\n   [4] - {specie_list[3]}\n   [5] - {specie_list[4]}\n'))
+# product_options = take_product(specie_option)
+#
+#
+#
+
 product_name = input('Product Name: ').upper()
+#
+# product_option = input('Which Product?\n[ 1 ] -> FCR           [ 2 ] -> BW           [ 3 ] -> ADG\n[ 4 ] -> EPI           [ 5 ] -> Mortality    [ 6 ] -> other')
+# parameter_option = input('Choose the parameter to be analysed\n[ 1 ] -> FCR           [ 2 ] -> BW           [ 3 ] -> ADG\n[ 4 ] -> EPI           [ 5 ] -> Mortality    [ 6 ] -> other')
+
 control_mean = float(input('Mean of control group: '))
 control_std_desv = float(input('Std. dev. of control group: '))
 treatment_mean = float(input(f'Expected Mean of {product_name} group: '))
@@ -82,7 +101,7 @@ duration = 1000  # Set Duration To 1000 ms == 1 second
 
 
 #############################################################################################
-print('---------------------------------------------------------------------------------------\n')
+print('-'*80)
 
 
 title_font_size = 8
@@ -97,8 +116,6 @@ color_yes3 = '#00b6bd'
 chart_dpi = 150
 
 #os.system('pause')
-
-
 
 
 delta_mean = control_mean - treatment_mean
@@ -128,7 +145,6 @@ def main():
     # print(f'Std. desv. of groups: {control_std_desv}')
     # print(f'Number of repetitions / groups: {n_samples_per_treatment} ')
     #
-
 
 
     print(f'\nSimulated trial results from first {n_lines} simulated trials of {n_trials_repetitions} in total\n')
@@ -259,6 +275,44 @@ def main():
     print(f'- Statistical Power (1 - Type II Error): {round(100-type2_error,1)} %    -  ideal value is > 70%\n')
     print(f'- Sample size / group for Type II Error = 20% and Type I Error (P value) = {p_level}:\n   -{round(sample_size_80_2tail,0)} - two-sided\n   -{round(sample_size_80_1tail, 0)} - one-sided\n')
     print('-' * 80)
+
+
+    # wrtite text file
+
+    txt_file = open(f'{product_name}_trial_analyser_output_n={n_samples_per_treatment}.txt', 'w')
+
+    txt_file.writelines('='*80)
+    txt_file.writelines('\r')
+    txt_file.writelines(f'             {text_note}\r')
+    txt_file.writelines('=' * 80)
+
+    txt_file.writelines('\r\rUser input Data:\r\r')
+    txt_file.writelines(f'Product Name: {product_name}\r')
+    txt_file.writelines(f'Mean from Control Group: {control_mean}  sd: {control_std_desv}\r')
+    txt_file.writelines(f'Mean from {product_name}: {treatment_mean}  sd: {control_std_desv}\r')
+    txt_file.writelines(f'Delta of means: {delta_mean} or {round(delta_mean/control_mean*100,1)} %\r')
+    txt_file.writelines(f'Min. acceptable delta: {delta_breakeven} or {round(delta_breakeven/control_mean*100,1)} %\r')
+    txt_file.writelines(f'P value <= {p_level}\r')
+    txt_file.writelines('=' * 80)
+
+    txt_file.writelines('\r\rOutput:\r\r')
+    txt_file.writelines(f' - Likelihood of show an accepted delta between Control and {product_name}: {percent_breakeven_expected} %\r')
+    txt_file.writelines(f' - Likelihood of show statistical significance between Control and {product_name} groups: {percent_stat_expected} % \r')
+
+    txt_file.writelines('=' * 80)
+
+    txt_file.writelines(f'\rPower Analysis (2-Sample t-Test)\r\r')
+    txt_file.writelines(f'- Likelihood of Type II Error (false negative): {type2_error} %  -  ideal value is <30%\r')
+    txt_file.writelines(f'- Statistical Power (1 - Type II Error): {round(100 - type2_error, 1)} %  -  ideal value is >70%\r')
+    txt_file.writelines('=' * 80)
+    txt_file.writelines('\rIdeal Sample size\r\r')
+    txt_file.writelines(f' - Sample size / group for stat. Power of 80% and P value = {p_level}:\r         -{round(sample_size_80_2tail, 0)} - two-sided\r         -{round(sample_size_80_1tail, 0)} - one-sided\r')
+    txt_file.writelines('=' * 80)
+    txt_file.writelines('\r\r')
+    txt_file.writelines(f' Charts were saved into "{os.getcwd()}" folder\r')
+
+    txt_file.close()
+
 
     label = [f'NO', f'YES']
     if n_trials_repetitions >= 2:
