@@ -54,88 +54,98 @@ def error():
 
 
 
-    # build title - ASC II title
-art = text2art(f"Field trial analyser", font='smslant')
-print(art) # print title
-
-############################################################################################
-
-print('***** This APP is only suitable for continuous parameters that follow normal distribution *****\n')
-# define the input parameters
-print('Please input the data below:\n\n')
-
-# # input variables
-#
-# specie_option = int(input(f'Animal Segment:\n   [1] - {specie_list[0]}\n   [2] - {specie_list[1]}\n   [3] - {specie_list[2]}\n   [4] - {specie_list[3]}\n   [5] - {specie_list[4]}\n'))
-# product_options = take_product(specie_option)
-#
-#
-#
-
-product_name = input('Product Name: ').upper()
-#
-# product_option = input('Which Product?\n[ 1 ] -> FCR           [ 2 ] -> BW           [ 3 ] -> ADG\n[ 4 ] -> EPI           [ 5 ] -> Mortality    [ 6 ] -> other')
-# parameter_option = input('Choose the parameter to be analysed\n[ 1 ] -> FCR           [ 2 ] -> BW           [ 3 ] -> ADG\n[ 4 ] -> EPI           [ 5 ] -> Mortality    [ 6 ] -> other')
-
-control_mean = float(input('Mean of control group: '))
-control_std_desv = float(input('Std. dev. of control group: '))
-treatment_mean = float(input(f'Expected Mean of {product_name} group: '))
-n_samples_per_treatment = int(input('Number of repetitions / group: '))
-delta_breakeven = float(input('Difference for break-even: '))
-p_option = float(input('\nP value (type I error):\n[ 1 ] -> p=0,01\n[ 2 ] -> p=0,05\n[ 3 ] -> p=0,1\n'))
-print()
 
 
-############ internal variables ###############################################################################
+cont = True
+while cont:
+    print(chr(27) + "[2J")
 
 
-n_trials_repetitions =5000  # number of repetitions to be simulated
-treatment_std_desv = control_std_desv  # consider standard deviation equal for both groups
-text_note = f'Field Trial Analyser - {app_version} - date: {date.today()} '
-n_lines = 15 # number of displayed trials on screen
-
-# sound variables
-frequency = 2500  # Set Frequency To 2500 Hertz
-duration = 1000  # Set Duration To 1000 ms == 1 second
+        # build title - ASC II title
+    art = text2art(f"Field trial analyser", font='smslant')
+    print(art) # print title
 
 
 
-#############################################################################################
-print('-'*80)
+
+    ############################################################################################
+
+    print('***** This APP is only suitable for continuous parameters that follow normal distribution *****\n')
+    # define the input parameters
+    print('Please input the data below:\n\n')
+
+    # # input variables
+    #
+    # specie_option = int(input(f'Animal Segment:\n   [1] - {specie_list[0]}\n   [2] - {specie_list[1]}\n   [3] - {specie_list[2]}\n   [4] - {specie_list[3]}\n   [5] - {specie_list[4]}\n'))
+    # product_options = take_product(specie_option)
+    #
+    #
+    #
+
+    product_name = input('Product Name: ').upper()
+    #
+    # product_option = input('Which Product?\n[ 1 ] -> FCR           [ 2 ] -> BW           [ 3 ] -> ADG\n[ 4 ] -> EPI           [ 5 ] -> Mortality    [ 6 ] -> other')
+    # parameter_option = input('Choose the parameter to be analysed\n[ 1 ] -> FCR           [ 2 ] -> BW           [ 3 ] -> ADG\n[ 4 ] -> EPI           [ 5 ] -> Mortality    [ 6 ] -> other')
+
+    control_mean = float(input('Mean of control group: '))
+    control_std_desv = float(input('Std. dev. of control group: '))
+    treatment_mean = float(input(f'Expected Mean of {product_name} group: '))
+    n_samples_per_treatment = int(input('Number of repetitions / group: '))
+    delta_breakeven = float(input('Difference for break-even: '))
+    p_option = float(input('\nP value (type I error):\n[ 1 ] -> p=0,01\n[ 2 ] -> p=0,05\n[ 3 ] -> p=0,1\n'))
+    print()
 
 
-title_font_size = 8
-color_no = '#ff6f69'
-color_yes = '#96ceb4'
+    ############ internal variables ###############################################################################
 
-color_no2 = '#ffda6f'
-color_yes2 = '#7ed6c8'
+    n_trials_repetitions =5000  # number of repetitions to be simulated
+    treatment_std_desv = control_std_desv  # consider standard deviation equal for both groups
+    text_note = f'Field Trial Analyser - {app_version} - date: {date.today()} '
+    n_lines = 15 # number of displayed trials on screen
 
-color_no3 = '#f14b23'
-color_yes3 = '#00b6bd'
-chart_dpi = 150
-
-#os.system('pause')
+    # sound variables
+    frequency = 2500  # Set Frequency To 2500 Hertz
+    duration = 1000  # Set Duration To 1000 ms == 1 second
 
 
-delta_mean = control_mean - treatment_mean
-if delta_mean < 0:
-    delta_negative = True
-    #delta_breakeven = abs(delta_breakeven) * -1
 
-elif delta_mean == 0:
-    print(f'Means from control and {product_name} group could not be equal!')
-    error()
+    #############################################################################################
 
-elif delta_mean > 0:
-    delta_negative = False
-   #delta_breakeven = abs(delta_breakeven)
 
-p_level = value_p(p_option)
+    title_font_size = 8
+    color_no = '#ff6f69'
+    color_yes = '#96ceb4'
 
-# os.system('pause')
+    color_no2 = '#ffda6f'
+    color_yes2 = '#7ed6c8'
 
-def main():
+    color_no3 = '#f14b23'
+    color_yes3 = '#00b6bd'
+    chart_dpi = 150
+
+    #os.system('pause')
+
+
+    delta_mean = control_mean - treatment_mean
+    if delta_mean < 0:
+        delta_negative = True
+        #delta_breakeven = abs(delta_breakeven) * -1
+
+    elif delta_mean == 0:
+        print(f'Means from control and {product_name} group could not be equal!')
+        error()
+
+    elif delta_mean > 0:
+        delta_negative = False
+       #delta_breakeven = abs(delta_breakeven)
+
+    p_level = value_p(p_option)
+
+    print('-'*80)
+
+    # os.system('pause')
+
+    # def main():
 
     x = PrettyTable()
     # print('\n@@@@ Field Trial Simulation @@@@\n')
@@ -163,7 +173,7 @@ def main():
         simul_control_average = round(np.average(simul_data_control), 3)
         simul_treatment_average = round(np.average(simul_data_treatment), 3)
 
-# modify ttest for one sided
+    # modify ttest for one sided
 
         ttest, p = stats.ttest_ind(simul_data_control,
                                    simul_data_treatment,
@@ -192,7 +202,7 @@ def main():
                 else:
                     breakeven = '.'
 
-            
+
         elif delta_negative == False:
             #delta = round(simul_control_average - simul_treatment_average, 4)
 
@@ -201,13 +211,13 @@ def main():
                 count_expected = count_expected + 1
             else:
                 expected = '.'
-            
+
             if delta <= delta_breakeven:
                 breakeven = 'Yes'
                 count_breakeven = count_breakeven + 1
             else:
                 breakeven = '.'
-        
+
         else:
             print("verify your input")
             error()
@@ -316,7 +326,7 @@ def main():
 
     label = [f'NO', f'YES']
     if n_trials_repetitions >= 2:
-        
+
         explode = [0, .05]
         plt.pie(trial_breakeven_expected,
                 labels=label,
@@ -338,12 +348,12 @@ def main():
                  fontsize=6,
                  alpha=.5
                  )
-        
+
         plt.savefig(f'{product_name} trial_breakeven_n={n_samples_per_treatment}.jpg',
                     dpi=chart_dpi,
                     )
         plt.show()
-        
+
         # plt.pie(trial_customer_expected,
         #         labels=label,
         #         startangle=90,
@@ -369,7 +379,7 @@ def main():
         #             )
         # plt.show()
         #
-        
+
         plt.pie(trial_statistic_diff_expected,
                 labels=label,
                 startangle=90,
@@ -398,16 +408,29 @@ def main():
         print(f'Charts were saved into "{os.getcwd()}" folder\n')
         print(f'                                              Field trial analyser - {app_version}\n')
         print('-' * 80)
-        print('\n         Press a key to Exit \n\n')
-        os.system('pause')
+
+
+
+
+        def repeat(user_option):
+            if user_option == 'Y' or user_option == 'y':
+                c = True
+            else:
+                c = False
+            return c
+
+        cont_loop = input('Do You want to analyse other trial? (Y/N)\n')
+        cont = repeat(cont_loop) # if Y repeat programm
 
 
 
 
 
 
-if __name__ ==  '__main__':
-    main()
+#
+#
+# if __name__ ==  '__main__':
+#     main()
 
 
 
