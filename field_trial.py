@@ -6,7 +6,7 @@
 # inference statistics: T-Test for equal variance - two tails.
 
 
-app_version = 'v. 0.9' # code version
+app_version = 'v. 0.91' # code version
 
 print(chr(27) + "[2J")
 print('loading....')
@@ -20,6 +20,7 @@ from datetime import date
 import os
 from statsmodels.stats import power as pwr
 from art import *
+
 
 #
 # from FTA_data import product_segment_dict, product_list, specie_list, take_product
@@ -44,6 +45,10 @@ def value_p(p_input):
 
 
 def error():
+    # sound variables
+    frequency = 2500  # Set Frequency To 2500 Hertz
+    duration = 1000  # Set Duration To 1000 ms == 1 second
+
     art = text2art(f"ERROR", font='broadway')
     winsound.Beep(frequency, duration)
     print('\n')
@@ -53,13 +58,10 @@ def error():
     exit()
 
 
-
-
-
 cont = True
 while cont:
-    print(chr(27) + "[2J")
-
+    os.system('cls') # clear screen
+    print('\033[H\033[J', end='')
 
         # build title - ASC II title
     art = text2art(f"Field trial analyser", font='smslant')
@@ -87,13 +89,32 @@ while cont:
     # product_option = input('Which Product?\n[ 1 ] -> FCR           [ 2 ] -> BW           [ 3 ] -> ADG\n[ 4 ] -> EPI           [ 5 ] -> Mortality    [ 6 ] -> other')
     # parameter_option = input('Choose the parameter to be analysed\n[ 1 ] -> FCR           [ 2 ] -> BW           [ 3 ] -> ADG\n[ 4 ] -> EPI           [ 5 ] -> Mortality    [ 6 ] -> other')
 
-    control_mean = float(input('Mean of control group: '))
-    control_std_desv = float(input('Std. dev. of control group: '))
-    treatment_mean = float(input(f'Expected Mean of {product_name} group: '))
+    def comma_finder_and_replacer(txt):
+        txt.strip() # remove eventual blank
+        finder = txt.find(',')
+
+        if finder != -1: #
+            txt = txt.replace(',', '.')
+
+        return float(txt)
+
+
+    c_mean = input('Mean of control group: ')
+    control_mean = comma_finder_and_replacer(c_mean)
+
+    c_std_desv = input('Std. dev. of control group: ')
+    control_std_desv = comma_finder_and_replacer(c_std_desv)
+
+    t_mean = input(f'Expected Mean of {product_name} group: ')
+    treatment_mean = comma_finder_and_replacer(t_mean)
+
     n_samples_per_treatment = int(input('Number of repetitions / group: '))
-    delta_breakeven = float(input('Difference for break-even: '))
+
+    d_breakeven = input('Difference for break-even: ')
+    delta_breakeven = comma_finder_and_replacer(d_breakeven)
+
     p_option = float(input('\nP value (type I error):\n[ 1 ] -> p=0,01\n[ 2 ] -> p=0,05\n[ 3 ] -> p=0,1\n'))
-    print()
+    #print()
 
 
     ############ internal variables ###############################################################################
@@ -103,9 +124,6 @@ while cont:
     text_note = f'Field Trial Analyser - {app_version} - date: {date.today()} '
     n_lines = 15 # number of displayed trials on screen
 
-    # sound variables
-    frequency = 2500  # Set Frequency To 2500 Hertz
-    duration = 1000  # Set Duration To 1000 ms == 1 second
 
 
 
@@ -421,11 +439,6 @@ while cont:
 
         cont_loop = input('Do You want to analyse other trial? (Y/N)\n')
         cont = repeat(cont_loop) # if Y repeat programm
-
-
-
-
-
 
 #
 #
