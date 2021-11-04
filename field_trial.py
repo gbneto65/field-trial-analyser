@@ -16,11 +16,9 @@ this version (0.92):
 
     - delete *.pjg files
     - exit() bug on error function - to be corrected
-
-
 """
 
-print(chr(27) + "[2J")
+#print(chr(27) + "[2J")
 print('loading....')
 
 import winsound
@@ -90,7 +88,8 @@ out_path = create_folder('/output_files')  # create folder for files & return ou
 
 cont = True
 while cont:
-    print('\033[H\033[J', end='')
+    os.system('cls') # clear console
+
 
     # build title - ASC II title
     art = text2art(f"Field trial analyser", font='smslant')
@@ -103,20 +102,9 @@ while cont:
     print('Please input the data below:\n')
     trial_id = input('Trial ID: ').upper()
 
-    # # input variables
-    #
-    # specie_option = int(input(f'Animal Segment:\n   [1] - {specie_list[0]}\n   [2] - {specie_list[1]}\n   [3] - {specie_list[2]}\n   [4] - {specie_list[3]}\n   [5] - {specie_list[4]}\n'))
-    # product_options = take_product(specie_option)
-    #
-    #
-    #
 
     product_name = input('Product Name: ').upper()
 
-
-    #
-    # product_option = input('Which Product?\n[ 1 ] -> FCR           [ 2 ] -> BW           [ 3 ] -> ADG\n[ 4 ] -> EPI           [ 5 ] -> Mortality    [ 6 ] -> other')
-    # parameter_option = input('Choose the parameter to be analysed\n[ 1 ] -> FCR           [ 2 ] -> BW           [ 3 ] -> ADG\n[ 4 ] -> EPI           [ 5 ] -> Mortality    [ 6 ] -> other')
 
     def comma_finder_and_replacer(txt):
         txt.strip()  # remove eventual blank
@@ -138,6 +126,7 @@ while cont:
     treatment_mean = comma_finder_and_replacer(t_mean)
 
     n_samples_per_treatment = int(input('Number of repetitions / group: '))
+
     if n_samples_per_treatment <= 1:
         print('Num samples / group cannot be lower than 2')
         error()
