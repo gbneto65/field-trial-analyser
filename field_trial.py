@@ -6,7 +6,7 @@
 # inference statistics: T-Test for equal variance - two tails.
 
 app_name = 'Field Trial Analyser'
-app_version = 'v. 0.92 # code version'
+app_version = 'v. 0.921' # code version
 
 """
 this version (0.92):
@@ -116,22 +116,22 @@ while cont:
         return float(txt)
 
 
-    c_mean = input('Mean of control group: ')
+    c_mean = input('\nMean of control group: ')
     control_mean = comma_finder_and_replacer(c_mean)
 
     c_std_desv = input('Std. dev. of control group: ')
     control_std_desv = comma_finder_and_replacer(c_std_desv)
 
-    t_mean = input(f'Expected Mean of {product_name} group: ')
+    t_mean = input(f'\nExpected Mean of {product_name} group: ')
     treatment_mean = comma_finder_and_replacer(t_mean)
 
-    n_samples_per_treatment = int(input('Number of repetitions / group: '))
+    n_samples_per_treatment = int(input('\nNumber of repetitions / group: '))
 
     if n_samples_per_treatment <= 1:
         print('Num samples / group cannot be lower than 2')
         error()
 
-    d_breakeven = input('Difference for break-even: ')
+    d_breakeven = input('\nDifference for break-even: ')
     delta_breakeven = comma_finder_and_replacer(d_breakeven)
 
     p_option = float(input('\nP value (type I error):\n[ 1 ] -> p=0,01\n[ 2 ] -> p=0,05\n[ 3 ] -> p=0,1\n'))
@@ -409,7 +409,7 @@ while cont:
 
         plt.show()
 
-        print(f'Charts were saved into "{os.getcwd()}" folder\n')
+        print(f'DOCX file with report was saved into "{os.getcwd()}"/output_files  folder\n')
         print(f'                                              Field trial analyser - {app_version}\n')
         print('-' * 80)
 
